@@ -1,21 +1,16 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const messagesRouter = require('./routes/messagesRouter')
 
 const app = express()
+const apiPath = 'api'
 
 app.use(bodyParser.json())      		// to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true,
 }))
-
-app.get('/api/:id', function (req, res) {
-	res.send({
-		title: 'Example data',
-		recivedId: req.param.id,
-		words: 'Lorem ipsum dolor sit ament'.split(' '),
-	})
-})
+app.use(`/${apiPath}/messages`, messagesRouter)
 
 app.use(express.static('./build'))
 app.get('/*', (req,res) => {
