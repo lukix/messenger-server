@@ -10,7 +10,7 @@ function addMessage(message) {
 function getMessages(address, startDate) {
 	return storage.messages
 		.filter(({ recieverAddress }) => address === undefined || recieverAddress === address)
-		.filter(({ date }) => startDate === undefined || date >= startDate)
+		.filter(({ date }) => startDate === undefined || date > startDate)
 }
 
 module.exports = { addMessage, getMessages }

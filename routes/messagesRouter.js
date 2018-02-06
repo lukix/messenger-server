@@ -24,7 +24,8 @@ router.route('/')
 		}
 	})
 	.get(function (req, res) {
-		const { recieverAddress, startDate } = req.body
+		const { recieverAddress } = req.query
+		const startDate = req.query.startDate ? new Date(req.query.startDate) : undefined
 		const messages = db.getMessages(recieverAddress, startDate)
 		res.status(200).send(messages)
 	})
