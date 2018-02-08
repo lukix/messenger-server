@@ -1,8 +1,9 @@
 const io = require('socket.io')()
 const { addMessageListener, removeMessageListener } = require('./database.js')
+const config = require('../config')
 
 module.exports = function (server) {
-	server.listen(8080)
+	server.listen(config.websocketsPort)
 	io.attach(server)
 
 	io.on('connection', function (socket) {

@@ -3,6 +3,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const sockets = require('./others/sockets')
 const messagesRouter = require('./routes/messagesRouter')
+const config = require('./config')
 
 const app = express()
 const apiPath = 'api'
@@ -18,8 +19,7 @@ app.get('/*', (req,res) => {
 	res.sendFile(path.join(__dirname, '/../build/index.html'))
 })
 
-const PORT = 8080
-const server = app.listen(PORT, function () {
-	console.log('App is running on port: ' + PORT)
+const server = app.listen(config.port, function () {
+	console.log('App is running on port: ' + config.port)
 })
 sockets(server)

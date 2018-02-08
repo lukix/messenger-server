@@ -16,7 +16,8 @@ router.route('/')
 		if(validationResult.isValid) {
 			const message = { ...req.body, date: new Date() }
 			db.addMessage(message)
-			res.status(201).send()
+				.then(addedMessage => res.status(201).send(addedMessage))
+				.catch(err => res.status(500).send())
 		} else {
 			res.status(400).send({
 				errors: validationResult.errors,
@@ -26,8 +27,9 @@ router.route('/')
 	.get(function (req, res) {
 		const { recieverAddress } = req.query
 		const startDate = req.query.startDate ? new Date(req.query.startDate) : undefined
-		const messages = db.getMessages(recieverAddress, startDate)
-		res.status(200).send(messages)
+		db.getMessages(recieverAddress, startDate)
+			.then(messages => res.status(200).send(messages))
+			.catch(err => res.status(500).send())
 	})
 
 module.exports = router

@@ -1,8 +1,7 @@
-//Simple database working in RAM memory
+const Datastore = require('nedb')
+const config = require('../config')
 
-const storage = {
-	messages: [],
-}
+const messagesStore = new Datastore({ filename: config.messagesStorePath, autoload: true })
 let messageListeners = []
 function addMessageListener(listener) {
 	messageListeners.push(listener)
@@ -12,13 +11,25 @@ function removeMessageListener(listener) {
 	messageListeners = messageListeners.filter(l => l !== listener)
 }
 function addMessage(message) {
-	storage.messages.push(message)
-	messageListeners.forEach((listener) => listener(message))
+	return new Promise((resolve, reject) => {
+		messagesStore.insert(message, function (err, newMessage) {
+			if(err) return reject(err)
+			resolve(newMessage)
+			messageListeners.forEach((listener) => listener(message))
+		})
+	})
 }
 function getMessages(address, startDate) {
-	return storage.messages
-		.filter(({ recieverAddress }) => address === undefined || recieverAddress === address)
-		.filter(({ date }) => startDate === undefined || date > startDate)
+	return new Promise((resolve, reject) => {
+		const query = {
+			...(address !== undefined ? { recieverAddress: address } : {}),
+			...(startDate !== undefined ? { date: { $gt: startDate } } : {}),
+		}
+		messagesStore.find(query, function (err, messages) {
+			if(err) return reject(err)
+			resolve(messages)
+		})
+	})
 }
 
 module.exports = { addMessage, getMessages, addMessageListener, removeMessageListener }
