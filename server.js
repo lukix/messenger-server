@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const sockets = require('./others/sockets')
 const messagesRouter = require('./routes/messagesRouter')
 
 const app = express()
@@ -18,6 +19,7 @@ app.get('/*', (req,res) => {
 })
 
 const PORT = 8080
-app.listen(PORT, function () {
+const server = app.listen(PORT, function () {
 	console.log('App is running on port: ' + PORT)
 })
+sockets(server)

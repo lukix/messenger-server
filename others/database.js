@@ -3,9 +3,17 @@
 const storage = {
 	messages: [],
 }
-
+let messageListeners = []
+function addMessageListener(listener) {
+	messageListeners.push(listener)
+	return listener
+}
+function removeMessageListener(listener) {
+	messageListeners = messageListeners.filter(l => l !== listener)
+}
 function addMessage(message) {
 	storage.messages.push(message)
+	messageListeners.forEach((listener) => listener(message))
 }
 function getMessages(address, startDate) {
 	return storage.messages
@@ -13,4 +21,4 @@ function getMessages(address, startDate) {
 		.filter(({ date }) => startDate === undefined || date > startDate)
 }
 
-module.exports = { addMessage, getMessages }
+module.exports = { addMessage, getMessages, addMessageListener, removeMessageListener }
