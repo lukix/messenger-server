@@ -19,11 +19,12 @@ function addMessage(message) {
 		})
 	})
 }
-function getMessages(address, startDate) {
+function getMessages(address, startDate, clientGeneratedId) {
 	return new Promise((resolve, reject) => {
 		const query = {
 			...(address !== undefined ? { recieverAddress: address } : {}),
 			...(startDate !== undefined ? { date: { $gt: startDate } } : {}),
+			...(clientGeneratedId !== undefined ? { clientGeneratedId } : {}),
 		}
 		messagesStore.find(query, function (err, messages) {
 			if(err) return reject(err)
