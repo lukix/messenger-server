@@ -11,7 +11,7 @@ router.route('/')
 			{ name: 'message', type: 'string' },
 			{ name: 'signature', type: 'string' },
 		]
-		const validationResult = validate(req.body, requiredProperties)
+		const validationResult = validate(req.body, requiredProperties, false)
 
 		if(validationResult.isValid) {
 			const message = { ...req.body, date: new Date() }

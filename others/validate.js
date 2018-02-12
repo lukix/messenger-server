@@ -1,7 +1,14 @@
-module.exports = function validate(object, requiredProperties) {
-	const errorMessages = requiredProperties
-		.map(checkProperty(object))
-		.filter(errorMessage => errorMessage !== null)
+module.exports = function validate(object, requiredProps, allowExtraProps = false) {
+	const extraPropsError = allowExtraProps
+		? null
+		: Object.keys(object).length <= requiredProps.length
+			? null
+			: 'Not expected property found'
+	const errorMessages = [
+		...requiredProps.map(checkProperty(object)),
+		extraPropsError,
+	].filter(errorMessage => errorMessage !== null)
+	
 	return {
 		isValid: errorMessages.length === 0,
 		errors: errorMessages,
