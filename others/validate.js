@@ -8,8 +8,8 @@ function validate(object, requiredProps, optionalProps = [], allowExtraProps = f
 			: 'Not expected property found'
 	const errorMessages = [
 		...requiredProps.map(checkPropertyExistance(object)),
-		...requiredProps.map(checkPropertyType(object)),
-		...optionalProps.map(checkPropertyType(object)),
+		...[...requiredProps, ...optionalProps].map(checkPropertyType(object)),
+		...[...requiredProps, ...optionalProps].map(validatePropWithCustomFunc(object)),
 		extraPropsError,
 	].filter(errorMessage => errorMessage !== null)
 	
@@ -31,6 +31,13 @@ const checkPropertyType = (object) => ({ name, type }) => {
 		: actualType !== type && type !== 'any' && type !== undefined
 			? `Invalid type ${actualType} of ${name}. Expected ${type}`
 			: null
+}
+const validatePropWithCustomFunc = (object) => ({ name, validateFunc = () => true }) => {
+	return !object.hasOwnProperty(name)
+		? null
+		: validateFunc(object[name])
+			? null
+			: `Property ${name} does not pass provided validation function`
 }
 
 module.exports = validate
