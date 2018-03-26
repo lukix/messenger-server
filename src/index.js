@@ -5,6 +5,7 @@ const sockets = require('./others/sockets')
 const messagesRouter = require('./routes/messagesRouter')
 const config = require('./config')
 
+const PORT = process.env.PORT || config.port
 const app = express()
 const apiPath = 'api'
 
@@ -15,7 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }))
 app.use(`/${apiPath}/messages`, messagesRouter)
 
-const server = app.listen(config.port, function () {
-	console.log('App is running on port: ' + config.port)
+const server = app.listen(PORT, function () {
+	console.log('App is running on port: ' + PORT)
 })
 sockets(server)
