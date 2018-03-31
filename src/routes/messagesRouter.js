@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../others/database')
+const { messages: messagesDB } = require('../others/database')
 const validate = require('../others/validate')
 const router = express.Router()
 
@@ -23,7 +23,7 @@ router.route('/')
 
 		if(validationResult.isValid) {
 			const message = { ...req.body, date: new Date() }
-			db.addMessage(message)
+			messagesDB.add(message)
 				.then(addedMessage => res.status(201).send(addedMessage))
 				.catch(err => res.status(500).send())
 		} else {
@@ -35,7 +35,7 @@ router.route('/')
 	.get(function (req, res) {
 		const { recieverAddress, clientGeneratedId } = req.query
 		const startDate = req.query.startDate ? new Date(req.query.startDate) : undefined
-		db.getMessages(recieverAddress, startDate, clientGeneratedId)
+		messagesDB.get(recieverAddress, startDate, clientGeneratedId)
 			.then(messages => messages.map(selectMessageProps))
 			.then(messages => res.status(200).send(messages))
 			.catch(err => res.status(500).send())

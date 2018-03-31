@@ -33,4 +33,11 @@ function getMessages(address, startDate, clientGeneratedId) {
 	})
 }
 
-module.exports = { addMessage, getMessages, addMessageListener, removeMessageListener }
+module.exports = {
+	messages: {
+		add: addMessage,
+		get: getMessages,
+		addListener: addMessageListener,
+		removeListener: removeMessageListener,
+	},
+}

@@ -1,5 +1,5 @@
 const io = require('socket.io')()
-const { addMessageListener, removeMessageListener } = require('./database.js')
+const { messages: messagesDB } = require('./database.js')
 const config = require('../config')
 
 module.exports = function (server) {
@@ -9,7 +9,7 @@ module.exports = function (server) {
 	io.on('connection', function (socket) {
 		let listener = null
 		socket.on('listen', function (publicKey) {
-			listener = addMessageListener(function (message) {
+			listener = messagesDB.addListener(function (message) {
 				if(message.recieverAddress === publicKey) {
 					socket.emit('message', publicKey)
 				}
@@ -17,7 +17,7 @@ module.exports = function (server) {
 		})
 		socket.on('disconnect', function () {
 			if(listener !== null) {
-				removeMessageListener(listener)
+				messagesDB.removeListener(listener)
 			}
 		})
 	})
