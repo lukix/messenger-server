@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const sockets = require('./others/sockets')
 const messagesRouter = require('./routes/messagesRouter')
+const publicKeysRouter = require('./routes/publicKeysRouter')
 const config = require('./config')
 
 const PORT = process.env.PORT || config.port
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true,
 }))
 app.use(`/${apiPath}/messages`, messagesRouter)
+app.use(`/${apiPath}/publicKeys`, publicKeysRouter)
 
 const server = app.listen(PORT, function () {
 	console.log('App is running on port: ' + PORT)
