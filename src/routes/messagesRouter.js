@@ -1,5 +1,5 @@
 const express = require('express')
-const { messages: messagesDB } = require('../others/database')
+const { messages: messagesDB } = require('../others/database/')
 const validate = require('../others/validate')
 const router = express.Router()
 

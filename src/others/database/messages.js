@@ -1,5 +1,5 @@
 const Datastore = require('nedb')
-const config = require('../config')
+const config = require('../../config')
 
 const messagesStore = new Datastore({ filename: config.messagesStorePath, autoload: true })
 let messageListeners = []
@@ -34,10 +34,8 @@ function getMessages(address, startDate, clientGeneratedId) {
 }
 
 module.exports = {
-	messages: {
-		add: addMessage,
-		get: getMessages,
-		addListener: addMessageListener,
-		removeListener: removeMessageListener,
-	},
+	add: addMessage,
+	get: getMessages,
+	addListener: addMessageListener,
+	removeListener: removeMessageListener,
 }

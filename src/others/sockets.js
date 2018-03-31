@@ -1,5 +1,5 @@
 const io = require('socket.io')()
-const { messages: messagesDB } = require('./database.js')
+const { messages: messagesDB } = require('./database/')
 const config = require('../config')
 
 module.exports = function (server) {
